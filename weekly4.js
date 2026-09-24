@@ -8,6 +8,8 @@ if (!gl)
     throw new Error("WebGL is not available.");
 }
 
+let theta = 0;
+
 function compileShader(type, source)
 {
     const result = gl.createShader(type);
@@ -252,11 +254,17 @@ function draw(mesh, model, color)
 
 function render()
 {
+    theta += 1;
+    const x = Math.cos(theta * 0.02);
+    const y = Math.sin(theta * 0.02);
+    const r = Math.abs(Math.sin(theta * 0.02));
+    const g = Math.abs(Math.cos(theta * 0.03));
+    const b = Math.abs(Math.sin(theta * 0.04));
     const ratio = window.devicePixelRatio || 1;
     canvas.width = Math.max(1, Math.floor(window.innerWidth * ratio));
     canvas.height = Math.max(1, Math.floor(window.innerHeight * ratio));
     gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(0.7, 0.3, 0.0, 1);
+    gl.clearColor(0.04, 0.05, 0.08, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
     gl.uniformMatrix4fv(
@@ -271,17 +279,19 @@ function render()
     );
     gl.uniform3f(
         uniforms.lightDirection,
-        0.5,
-        0.2,
-        0.5
+        x,
+        1.0,
+        y
     );
-    gl.uniform3f(uniforms.lightColor, 1.0, 0.45, 0.15);
-    gl.uniform1f(uniforms.ambient, 0.05);
+    gl.uniform3fv(uniforms.lightColor, new Float32Array([r, g, b]));
+    gl.uniform1f(uniforms.ambient, 0.3);
     draw(ground, identity(), [0.35, 0.38, 0.42]);
     draw(cube, transform(-2.5, 1, 0, 1, 0), [0.9, 0.25, 0.2]);
     draw(cube, transform(2.5, 1, 0, 1, 0), [0.2, 0.45, 0.95]);
     draw(sphere, transform(0, 0.7, -2.5, 0.7, 0), [0.95, 0.7, 0.15]);
     draw(pyramid, transform(0, 0, 2.5, 1.2, 0), [0.2, 0.8, 0.4]);
+
+    requestAnimationFrame(render);
 }
 
-render();
+requestAnimationFrame(render);

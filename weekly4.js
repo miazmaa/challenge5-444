@@ -256,7 +256,7 @@ function render()
     canvas.width = Math.max(1, Math.floor(window.innerWidth * ratio));
     canvas.height = Math.max(1, Math.floor(window.innerHeight * ratio));
     gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(0.04, 0.05, 0.08, 1);
+    gl.clearColor(0.7, 0.3, 0.0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
     gl.uniformMatrix4fv(
@@ -272,11 +272,11 @@ function render()
     gl.uniform3f(
         uniforms.lightDirection,
         0.5,
-        0.8,
-        1.0
+        0.2,
+        0.5
     );
-    gl.uniform3f(uniforms.lightColor, 1, 1, 1);
-    gl.uniform1f(uniforms.ambient, 0.22);
+    gl.uniform3f(uniforms.lightColor, 1.0, 0.45, 0.15);
+    gl.uniform1f(uniforms.ambient, 0.05);
     draw(ground, identity(), [0.35, 0.38, 0.42]);
     draw(cube, transform(-2.5, 1, 0, 1, 0), [0.9, 0.25, 0.2]);
     draw(cube, transform(2.5, 1, 0, 1, 0), [0.2, 0.45, 0.95]);
